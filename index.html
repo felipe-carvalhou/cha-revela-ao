@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chá Revelação • Aurora ou Bernardo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background:
+        radial-gradient(circle at top, rgba(201, 161, 90, 0.22), transparent 32%),
+        radial-gradient(circle at bottom, rgba(232, 211, 185, 0.65), transparent 30%),
+        linear-gradient(180deg, #fbf6ee 0%, #f4e8d6 45%, #ecdcc3 100%);
+      overflow-x: hidden;
+      color: #6b4a2e;
+    }
+    .gold-text {
+      background: linear-gradient(90deg, #9c7130 0%, #d4ae64 18%, #b8862f 40%, #e2c27e 52%, #a87a2a 72%, #c99c4f 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmer 3.5s linear infinite;
+    }
+    @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+
+    /* nomes em cursiva: no celular empilha, no PC fica em linha */
+    .names {
+      display: flex; flex-direction: column; align-items: center;
+      font-family: 'Great Vibes', cursive; font-size: clamp(3.4rem, 15vw, 6rem); line-height: 1.05;
+    }
+    .names span { padding: .08em .3em; }
+    .names .ou { font-size: .42em; padding-top: 0; padding-bottom: 0; }
+    @media (min-width: 640px) { .names { flex-direction: row; align-items: baseline; justify-content: center; } }
+
+    .sparkles::before, .sparkles::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(201, 161, 90, 0.95) 0 1px, transparent 1.6px),
+        radial-gradient(circle, rgba(184, 134, 47, 0.55) 0 1px, transparent 1.5px);
+      background-size: 120px 120px, 180px 180px;
+      background-position: 10px 20px, 50px 70px;
+      opacity: 0.3;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    @media (max-width: 640px) { body { padding-bottom: 2rem; } }
+    .brand-footer { text-align: center; padding: 16px; font-size: 11px; color: rgba(107,74,46,.45); letter-spacing: 0.05em; }
+    .brand-footer a { color: #a07b4f; text-decoration: none; font-weight: 600; }
+    .brand-footer a:hover { color: #7a5a3c; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <section id="cover" class="sparkles relative min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="relative w-full max-w-4xl mx-auto text-center">
+      <p class="uppercase tracking-[0.4em] text-xs sm:text-sm text-[#a07b4f] mb-2">Chá Revelação</p>
+      <h1 class="names">
+        <span class="gold-text">Aurora</span>
+        <span class="ou gold-text">ou</span>
+        <span class="gold-text">Bernardo</span>
+      </h1>
+      <p class="mt-3 text-[#8a6a48] tracking-[0.25em] uppercase text-sm sm:text-base">21/11/2026 • 12h</p>
+      <div class="mt-8 flex justify-center">
+        <img
+          id="envelope"
+          src="envelope.webp"
+          alt="Envelope do convite - toque para revelar"
+          class="w-72 sm:w-96 cursor-pointer transition-transform duration-500 hover:-translate-y-2 hover:scale-105 drop-shadow-[0_15px_25px_rgba(120,85,45,0.25)] object-contain"
+          role="button" tabindex="0" aria-label="Abrir convite"
+        />
+      </div>
+      <p class="mt-8 text-sm sm:text-base text-[#8a6a48]">Toque no envelope para revelar o convite</p>
+    </div>
+  </section>
+
+  <footer class="brand-footer">
+    Convite criado por <a href="https://convidaeu.com.br" target="_blank" rel="noopener">Convida&u</a>
+  </footer>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    envelope.addEventListener('click', () => { window.location.href = 'convite.html'; });
+    envelope.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = 'convite.html'; } });
+  </script>
+</body>
+</html>

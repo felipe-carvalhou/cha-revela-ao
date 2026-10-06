@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chá Revelação - Aurora ou Bernardo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { serifFancy: ["Georgia", "serif"], cursive: ["'Great Vibes'", "cursive"] },
+          boxShadow: { gold: "0 0 30px rgba(201, 161, 90, 0.25)" },
+          animation: { floatSlow: "floatSlow 4s ease-in-out infinite", shimmer: "shimmer 3.5s linear infinite", fadeUp: "fadeUp 1s ease forwards" },
+          keyframes: {
+            floatSlow: { "0%, 100%": { transform: "translateY(0px)" }, "50%": { transform: "translateY(-8px)" } },
+            shimmer: { "0%": { backgroundPosition: "-200% center" }, "100%": { backgroundPosition: "200% center" } },
+            fadeUp: { "0%": { opacity: 0, transform: "translateY(22px)" }, "100%": { opacity: 1, transform: "translateY(0)" } }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(201,161,90,.16), transparent 22%),
+        radial-gradient(circle at 80% 15%, rgba(201,161,90,.12), transparent 20%),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,.55), transparent 25%),
+        linear-gradient(180deg, #fbf6ee 0%, #f4e8d6 35%, #ecdcc3 100%);
+      min-height: 100vh; overflow-x: hidden;
+    }
+    .gold-text {
+      background: linear-gradient(90deg, #9c7130 0%, #d4ae64 18%, #b8862f 40%, #e2c27e 52%, #a87a2a 72%, #c99c4f 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .gold-line { background: linear-gradient(90deg, transparent, rgba(201,161,90,.25), #c9a15a, rgba(201,161,90,.25), transparent); }
+    .card-glow {
+      background: linear-gradient(180deg, rgba(255,252,247,.94), rgba(250,243,233,.97));
+      border: 1px solid rgba(201,161,90,.4);
+      box-shadow: 0 10px 40px rgba(120,85,45,.14), 0 0 0 1px rgba(255,255,255,.7) inset;
+      backdrop-filter: blur(8px);
+    }
+    .sparkle::before, .sparkle::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(201,161,90,.75) 1px, transparent 1.8px),
+        radial-gradient(circle, rgba(184,134,47,.5) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,.9) .8px, transparent 1.6px);
+      background-size: 130px 130px, 180px 180px, 220px 220px;
+      background-position: 0 0, 40px 20px, 100px 60px;
+      opacity: .28; border-radius: inherit;
+    }
+    /* nomes em cursiva: no celular empilha, no PC fica em linha */
+    .names {
+      display: flex; flex-direction: column; align-items: center;
+      font-family: 'Great Vibes', cursive; font-size: clamp(3.2rem, 14vw, 5.6rem); line-height: 1.05;
+    }
+    .names span { padding: .08em .3em; }
+    .names .ou { font-size: .42em; padding-top: 0; padding-bottom: 0; }
+    @media (min-width: 640px) { .names { flex-direction: row; align-items: baseline; justify-content: center; } }
+
+    .btn-whats {
+      background: linear-gradient(135deg, #c9a15a, #f3e2b6, #b8862f);
+      color: #3d2a14;
+      box-shadow: 0 10px 25px rgba(184,134,47,.22);
+    }
+    .btn-whats:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(184,134,47,.3); }
+    .bg-modal-cream { background: radial-gradient(circle at top, #fffaf3 0%, #f1e3cf 100%); }
+    .btn-modal-gold {
+      background: linear-gradient(90deg, #d2ad6a 0%, #f7e8c4 50%, #d2ad6a 100%);
+      box-shadow: 0 4px 12px rgba(120,85,45,.18), inset 0 2px 5px rgba(255,255,255,.6);
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    @media (max-width: 640px) {
+      .card-glow { padding: 1rem; }
+      .btn-whats, #btnSugestoes, #confirmarPresenca { width: 100%; display: block; text-align: center; }
+      .mt-10 { margin-top: 1.5rem; }
+    }
+
+    /* PALETA */
+    .paleta { display: flex; justify-content: center; }
+    .paleta span {
+      width: 52px; height: 52px; border-radius: 50%; margin-left: -10px;
+      border: 2px solid rgba(255,255,255,.9); box-shadow: 0 3px 10px rgba(120,85,45,.2);
+    }
+    .paleta span:first-child { margin-left: 0; }
+
+    /* COUNTDOWN */
+    .countdown-wrap {
+      background: rgba(201,161,90,.07);
+      border: 1px solid rgba(201,161,90,.3);
+      border-radius: 1.5rem;
+      padding: 1.25rem 1rem;
+      margin-top: 2rem;
+    }
+    .countdown-title {
+      font-size: 10px; letter-spacing: 0.38em; text-transform: uppercase;
+      color: #a07b4f; text-align: center; margin-bottom: 1rem; font-family: Georgia, serif;
+    }
+    .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .countdown-block {
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(201,161,90,.28);
+      border-radius: 12px; padding: 10px 6px; text-align: center;
+    }
+    .countdown-num {
+      font-size: clamp(1.4rem, 5vw, 2.25rem); font-weight: 700;
+      background: linear-gradient(180deg, #d4ae64, #9c7130);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      line-height: 1; font-variant-numeric: tabular-nums; font-family: Georgia, serif;
+    }
+    .countdown-label { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(107,74,46,.6); margin-top: 4px; }
+
+    /* BRAND FOOTER */
+    .brand-footer { text-align: center; padding: 20px 16px; font-size: 11px; color: rgba(107,74,46,.45); letter-spacing: 0.05em; }
+    .brand-footer a { color: #a07b4f; text-decoration: none; font-weight: 600; transition: color .2s; }
+    .brand-footer a:hover { color: #7a5a3c; }
+  </style>
+</head>
+<body class="text-[#6b4a2e] selection:bg-amber-200 selection:text-black relative">
+  <main class="relative isolate px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+      <section class="card-glow sparkle relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-10 sm:py-14 shadow-gold animate-fadeUp">
+        <div class="absolute inset-x-0 top-0 h-px gold-line"></div>
+        <div class="absolute inset-x-0 bottom-0 h-px gold-line"></div>
+
+        <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <p class="mb-3 text-xs uppercase tracking-[0.45em] text-[#a07b4f]">Menina ou Menino?</p>
+          <img src="envelope.webp" alt="Envelope dourado com selo de coração - Chá Revelação" class="w-60 sm:w-72 mb-6 mx-auto animate-floatSlow drop-shadow-[0_10px_18px_rgba(160,120,60,0.22)] object-contain" />
+          <h1 class="names">
+            <span class="gold-text animate-shimmer">Aurora</span>
+            <span class="ou gold-text">ou</span>
+            <span class="gold-text animate-shimmer">Bernardo</span>
+          </h1>
+          <div class="my-5 h-px w-40 gold-line sm:w-56"></div>
+          <p class="gold-text font-serifFancy text-2xl tracking-[0.2em] sm:text-4xl">CHÁ REVELAÇÃO</p>
+          <p class="mt-6 max-w-2xl text-sm leading-7 text-[#7a5a3c] sm:text-base">Com o coração cheio de amor e gratidão, mamãe e papai convidam você para descobrir conosco o maior presente que Deus poderia nos dar.</p>
+        </div>
+
+        <!-- COUNTDOWN -->
+        <div class="countdown-wrap max-w-lg mx-auto">
+          <p class="countdown-title">✦ Faltam para a revelação ✦</p>
+          <div class="countdown-grid" id="countdown">
+            <div class="countdown-block"><div class="countdown-num" id="cd-days">--</div><div class="countdown-label">Dias</div></div>
+            <div class="countdown-block"><div class="countdown-num" id="cd-hours">--</div><div class="countdown-label">Horas</div></div>
+            <div class="countdown-block"><div class="countdown-num" id="cd-mins">--</div><div class="countdown-label">Min</div></div>
+            <div class="countdown-block"><div class="countdown-num" id="cd-secs">--</div><div class="countdown-label">Seg</div></div>
+          </div>
+        </div>
+
+        <div class="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="rounded-3xl border border-[#c9a15a]/30 bg-white/50 p-5 text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-[#a07b4f]">Data</p>
+            <p class="mt-2 text-lg font-semibold text-[#6b4a2e]">21/11/2026</p>
+          </div>
+          <div class="rounded-3xl border border-[#c9a15a]/30 bg-white/50 p-5 text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-[#a07b4f]">Horário</p>
+            <p class="mt-2 text-lg font-semibold text-[#6b4a2e]">12 horas</p>
+          </div>
+          <div class="rounded-3xl border border-[#c9a15a]/30 bg-white/50 p-5 text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-[#a07b4f]">Dia</p>
+            <p class="mt-2 text-lg font-semibold text-[#6b4a2e]">Sábado</p>
+          </div>
+          <div class="rounded-3xl border border-[#c9a15a]/30 bg-white/50 p-5 text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-[#a07b4f]">Traje</p>
+            <p class="mt-2 text-lg font-semibold text-[#6b4a2e]">Tons da paleta</p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex justify-center">
+          <div class="w-full max-w-3xl rounded-[1.75rem] border border-[#c9a15a]/30 bg-white/50 p-6 sm:p-7 text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-[#a07b4f]">Local</p>
+            <h2 class="mt-3 gold-text font-serifFancy text-2xl sm:text-4xl">Fazenda Boa Vista</h2>
+            <p class="mt-3 text-[#7a5a3c]">Portaria 3 — Serviço</p>
+            <a href="https://maps.google.com/?q=Fazenda+Boa+Vista,+Porto+Feliz+-+SP" target="_blank" class="inline-block mt-2 text-xs text-[#a07b4f] underline underline-offset-2">📍 Ver no mapa</a>
+            <div class="mt-6 h-px w-full gold-line"></div>
+            <p class="mt-6 font-cursive text-4xl text-[#a87a2a]">Entre no clima</p>
+            <p class="mt-2 text-sm leading-7 text-[#7a5a3c]">Venha com uma peça de roupa nas cores da paleta abaixo:</p>
+            <div class="paleta mt-4">
+              <span style="background:#ffffff"></span>
+              <span style="background:#e6ccb0"></span>
+              <span style="background:#cfa983"></span>
+            </div>
+            <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <button id="confirmarPresenca" class="btn-whats inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition w-full sm:w-auto" type="button">Confirmar presença</button>
+              <button id="btnSugestoes" class="inline-flex items-center justify-center rounded-full border border-[#c9a15a]/50 bg-white/70 px-6 py-3 text-sm font-semibold text-[#6b4a2e] transition hover:border-[#c9a15a] hover:bg-white w-full sm:w-auto" type="button">Sugestões de presentes</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 flex justify-center"><div class="h-px w-full max-w-xl gold-line"></div></div>
+        <p class="mt-8 text-center text-xs uppercase tracking-[0.28em] text-[#a07b4f]">Aurora ou Bernardo • Chá Revelação • 21/11/2026</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- BRAND FOOTER -->
+  <footer class="brand-footer">
+    Convite criado por <a href="https://convidaeu.com.br" target="_blank" rel="noopener">Convida&u</a>
+  </footer>
+
+  <!-- MODAL PRESENTES -->
+  <div id="modalSugestoes" class="fixed inset-0 z-50 flex items-center justify-center bg-[#2b1d10]/60 p-4 backdrop-blur-sm transition-opacity hidden opacity-0 duration-300">
+    <div class="relative w-full max-w-md rounded-[2rem] border border-[#c9a15a]/50 overflow-hidden shadow-2xl bg-modal-cream transform scale-95 transition-transform duration-300" id="modalContent">
+      <button id="closeModal" class="absolute top-4 right-5 text-[#a07b4f] hover:text-[#6b4a2e] z-10 text-3xl font-light">&times;</button>
+      <div class="p-8 pt-10 flex flex-col items-center text-center relative sparkle">
+        <img src="envelope.webp" class="w-32 mb-4 drop-shadow-[0_5px_15px_rgba(160,120,60,0.3)] object-contain" alt="Envelope">
+        <div class="my-2 h-px w-32 gold-line"></div>
+        <h2 class="text-4xl text-[#a87a2a] font-cursive mb-8 tracking-wide">Sugestão de presentes</h2>
+        <div class="w-full space-y-5">
+          <div class="btn-modal-gold rounded-full px-4 py-3 relative flex items-center justify-center">
+            <span class="absolute left-4 text-xl">🧷</span>
+            <p class="text-[#5c3d1e] font-bold text-[10px] sm:text-xs uppercase tracking-wider leading-relaxed">Fraldas<br>Tamanhos P, M ou G</p>
+          </div>
+          <div class="btn-modal-gold rounded-full px-4 py-3 relative flex items-center justify-center">
+            <span class="absolute left-4 text-xl">🧴</span>
+            <p class="text-[#5c3d1e] font-bold text-[10px] sm:text-xs uppercase tracking-wider leading-relaxed">Lenços umedecidos<br>e pomadas</p>
+          </div>
+          <div class="btn-modal-gold rounded-full px-4 py-3 relative flex items-center justify-center">
+            <span class="absolute left-4 text-xl">🛁</span>
+            <p class="text-[#5c3d1e] font-bold text-[10px] sm:text-xs uppercase tracking-wider leading-relaxed">Itens de higiene<br>e cuidados do bebê</p>
+          </div>
+          <!-- PIX (descomente e preencha se a cliente quiser)
+          <div class="btn-modal-gold rounded-full px-4 py-3">
+            <p class="text-[#5c3d1e] font-bold text-[10px] sm:text-xs uppercase tracking-wider leading-relaxed">Chave Pix: 00000000000<br>Nome do titular</p>
+          </div>
+          -->
+        </div>
+        <div class="mt-8 h-px w-32 gold-line"></div>
+        <p class="mt-6 text-2xl text-[#a87a2a] font-cursive tracking-wide">Lembrando que nosso maior presente<br>será ter a sua presença!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // COUNTDOWN — 21/11/2026 às 12:00
+    const eventDate = new Date('2026-11-21T12:00:00');
+    function updateCountdown() {
+      const diff = eventDate - new Date();
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML = '<p style="text-align:center;color:#a87a2a;font-weight:700;grid-column:span 4">✦ Chegou o grande dia! ✦</p>';
+        return;
+      }
+      const days  = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      const mins  = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const secs  = Math.floor((diff % (1000*60)) / 1000);
+      document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+      document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+      document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // WHATSAPP
+    document.getElementById('confirmarPresenca').addEventListener('click', () => {
+      const texto = encodeURIComponent('Olá, quero confirmar presença no Chá Revelação de Aurora ou Bernardo.');
+      window.open('https://wa.me/5515997771549?text=' + texto, '_blank');
+    });
+
+    // MODAL
+    const modalSugestoes = document.getElementById('modalSugestoes');
+    const modalContent   = document.getElementById('modalContent');
+    function abrirModal()  { modalSugestoes.classList.remove('hidden'); setTimeout(() => { modalSugestoes.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10); }
+    function fecharModal() { modalSugestoes.classList.add('opacity-0'); modalContent.classList.add('scale-95'); setTimeout(() => modalSugestoes.classList.add('hidden'), 300); }
+    document.getElementById('btnSugestoes').addEventListener('click', abrirModal);
+    document.getElementById('closeModal').addEventListener('click', fecharModal);
+    modalSugestoes.addEventListener('click', (e) => { if(e.target===modalSugestoes) fecharModal(); });
+  </script>
+</body>
+</html>
